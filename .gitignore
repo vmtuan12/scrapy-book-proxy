@@ -1,0 +1,8 @@
+__pycache__/
+.DS_Store
+result*.json
+.idea
+test*.py
+.env
+base_result.json
+best_result_result.json
