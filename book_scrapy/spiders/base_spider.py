@@ -80,9 +80,11 @@ class BaseSpider(scrapy.Spider):
                                 meta={"source": (response.url)})
 
     def parse_book(self, response: Response, **kwargs: Any):
-        yield self.make_book(response=response)
+        result = self.make_book(response=response)
+        if len(result["author"]) > 0:
+            yield result
 
-    def _extract_title(self, response: Response) -> str:
+    def _extract_title(self, response: Response) -> str | None:
         title = response.xpath(constants.GOODREADS_TITLE_XPATH + "//text()").get()
         if title == None:
             return ""
@@ -97,7 +99,7 @@ class BaseSpider(scrapy.Spider):
 
         return list(result)
     
-    def _extract_description(self, response: Response) -> str:
+    def _extract_description(self, response: Response) -> str | None:
         description = response.xpath(constants.GOODREADS_DESCRIPTION_XPATH + "//text()").getall()
 
         merged_description = ""
@@ -107,21 +109,21 @@ class BaseSpider(scrapy.Spider):
 
         return self._sub_space(merged_description) if merged_description != "" else None
     
-    def _extract_genres(self, response: Response) -> list[str]:
+    def _extract_genres(self, response: Response) -> list[str] | None:
         genre_list = response.xpath(constants.GOODREADS_GENRE_LIST_XPATH + "//text()").getall()
         genres = []
         for genre in genre_list:
             genres.append(genre)
 
-        return genres
+        return genres if len(genres) != 0 else None
     
-    def _extract_series(self, response: Response) -> str:
+    def _extract_series(self, response: Response) -> str | None:
         series = response.xpath(constants.GOODREADS_SERIES_XPATH + "//text()").get()
         if series == None:
             return None
         return self._sub_space(series.strip())
     
-    def _extract_published_year(self, response: Response) -> int:
+    def _extract_published_year(self, response: Response) -> int | None:
         year = response.xpath(constants.GOODREADS_BOOK_PUBLISH_YEAR + "//text()").get()
         if year == None:
             return None
@@ -144,14 +146,14 @@ class BaseSpider(scrapy.Spider):
         # return language_element.get_attribute("innerText")
         return "English"
 
-    def _extract_average_rating(self, response: Response) -> float:
+    def _extract_average_rating(self, response: Response) -> float | None:
         avg_rating_element = response.xpath(constants.GOODREADS_BOOK_RATING + "//text()").get()
         if avg_rating_element == None:
             return None
         
         return float(avg_rating_element)
 
-    def _extract_review_counts(self, response: Response) -> int:
+    def _extract_review_counts(self, response: Response) -> int | None:
         rating_count_element = response.xpath(constants.GOODREADS_BOOK_RATING_COUNT + "//text()").get()
         if rating_count_element == None:
             return None

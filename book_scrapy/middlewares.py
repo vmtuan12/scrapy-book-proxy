@@ -83,37 +83,38 @@ class BookScrapyDownloaderMiddleware:
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
 
-        if spider.name == 'children':
-            proxy = proxyPools[0].split(":")
-        elif spider.name == 'classics':
-            proxy = proxyPools[1].split(":")
-        elif spider.name == 'contemporary':
-            proxy = proxyPools[2].split(":")
-        elif spider.name == 'fantasy':
-            proxy = proxyPools[3].split(":")
-        elif spider.name == 'fiction':
-            proxy = proxyPools[4].split(":")
-        elif spider.name == 'horror':
-            proxy = proxyPools[5].split(":")
-        elif spider.name == 'romance':
-            proxy = proxyPools[6].split(":")
-        elif spider.name == 'thriller':
-            proxy = proxyPools[7].split(":")
-        elif spider.name == 'mystery':
-            proxy = proxyPools[8].split(":")
-        else:
-            proxy = proxyPools[9].split(":")
+        # if spider.name == 'children':
+        #     proxy = proxyPools[0].split(":")
+        # elif spider.name == 'classics':
+        #     proxy = proxyPools[1].split(":")
+        # elif spider.name == 'contemporary':
+        #     proxy = proxyPools[2].split(":")
+        # elif spider.name == 'fantasy':
+        #     proxy = proxyPools[3].split(":")
+        # elif spider.name == 'fiction':
+        #     proxy = proxyPools[4].split(":")
+        # elif spider.name == 'horror':
+        #     proxy = proxyPools[5].split(":")
+        # elif spider.name == 'romance':
+        #     proxy = proxyPools[6].split(":")
+        # elif spider.name == 'thriller':
+        #     proxy = proxyPools[7].split(":")
+        # elif spider.name == 'mystery':
+        #     proxy = proxyPools[8].split(":")
+        # else:
+        #     proxy = proxyPools[9].split(":")
 
         # proxy = random.choice(proxyPools).split(":")
-        httpsProxy = proxy[0]
-        portProxy = proxy[1]
-        usernameProxy = proxy[2]
-        passwordProxy = proxy[3]
+        # httpsProxy = proxy[0]
+        # portProxy = proxy[1]
+        # usernameProxy = proxy[2]
+        # passwordProxy = proxy[3]
 
-        print("connect to proxy {}".format(proxy))
+        # print("connect to proxy {}".format(proxy))
 
-        request.meta['proxy'] = "http://" + httpsProxy + ":" + portProxy
-        request.headers['Proxy-Authorization'] = basic_auth_header(usernameProxy, passwordProxy)
+        # request.meta['proxy'] = "http://" + httpsProxy + ":" + portProxy
+        # request.headers['Proxy-Authorization'] = basic_auth_header(usernameProxy, passwordProxy)
+        return None
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
